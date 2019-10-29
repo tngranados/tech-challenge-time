@@ -1,4 +1,4 @@
-# Pento check challenge
+# Pento tech challenge
 
 Thanks for taking the time to do our tech challenge. 
 
