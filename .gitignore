@@ -1,0 +1,17 @@
+# Editor files
+.vscode/
+
+# Misc stuff
+**/.DS_Store
+
+# Vendor libraries
+node_modules/
+
+# Configuration files
+.env
+
+# Development files
+tech-challenge-time
+database.db
+debug
+debug.test
