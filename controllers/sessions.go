@@ -28,13 +28,13 @@ func NewSessionsCtrl(db *sql.DB, sessionStore *storage.SessionStore) *SessionCtr
 func (ctrl *SessionCtrl) Get(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	session, err := ctrl.sessionStore.Get(ctrl.db, id)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 	if session == nil {
@@ -49,7 +49,7 @@ func (ctrl *SessionCtrl) Get(c *gin.Context) {
 func (ctrl *SessionCtrl) GetAll(c *gin.Context) {
 	sessions, err := ctrl.sessionStore.GetAll(ctrl.db)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 	}
 
 	c.JSON(http.StatusOK, sessions)
@@ -59,7 +59,7 @@ func (ctrl *SessionCtrl) GetAll(c *gin.Context) {
 func (ctrl *SessionCtrl) GetFinished(c *gin.Context) {
 	sessions, err := ctrl.sessionStore.GetAllFinished(ctrl.db)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 	}
 
 	c.JSON(http.StatusOK, sessions)
@@ -69,7 +69,7 @@ func (ctrl *SessionCtrl) GetFinished(c *gin.Context) {
 func (ctrl *SessionCtrl) GetUnfinished(c *gin.Context) {
 	sessions, err := ctrl.sessionStore.GetAllUnfinished(ctrl.db)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 	}
 
 	c.JSON(http.StatusOK, sessions)
@@ -80,13 +80,18 @@ func (ctrl *SessionCtrl) Add(c *gin.Context) {
 	session := &models.Session{}
 	err := c.BindJSON(session)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if session.Name == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "A session must have a name")
 		return
 	}
 
 	err = ctrl.sessionStore.Insert(ctrl.db, session)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -98,13 +103,17 @@ func (ctrl *SessionCtrl) Update(c *gin.Context) {
 	session := &models.Session{}
 	err := c.BindJSON(session)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
+	}
+
+	if session.Name == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, "You can't remove the name of a session")
 	}
 
 	err = ctrl.sessionStore.Update(ctrl.db, session)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -115,13 +124,13 @@ func (ctrl *SessionCtrl) Update(c *gin.Context) {
 func (ctrl *SessionCtrl) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	err = ctrl.sessionStore.Delete(ctrl.db, id)
 	if err != nil {
-		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
