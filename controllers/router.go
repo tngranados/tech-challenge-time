@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/tngranados/tech-challenge-time/storage"
 )
@@ -26,6 +27,12 @@ func SetupRouter(debug bool, db *sql.DB) (*gin.Engine, error) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowCredentials: true,
+	}))
 
 	router.Use(ErrorMiddleware())
 
