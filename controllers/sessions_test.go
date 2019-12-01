@@ -60,7 +60,7 @@ func TestSessions(t *testing.T) {
 		session := &models.Session{
 			ID:        len(sessions) + i,
 			Name:      "unfinished session" + strconv.Itoa(i),
-			StartedAt: now.Add(time.Duration(-i) * time.Hour),
+			StartedAt: now.Add(time.Duration(-10-i) * time.Hour),
 		}
 
 		addSession(t, router, session)

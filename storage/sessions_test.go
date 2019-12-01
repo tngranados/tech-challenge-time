@@ -19,13 +19,13 @@ func TestSessionStore(t *testing.T) {
 	testSession := &models.Session{
 		ID:         1,
 		Name:       "Test",
-		StartedAt:  time.Now().Add(-1 * time.Hour).UTC(),
+		StartedAt:  time.Now().Add(-30 * time.Minute).UTC(),
 		FinishedAt: time.Now().UTC(),
 	}
 	testSession2 := &models.Session{
 		ID:        2,
 		Name:      "Test2",
-		StartedAt: time.Now().Add(-30 * time.Minute).UTC(),
+		StartedAt: time.Now().Add(-1 * time.Hour).UTC(),
 	}
 
 	// Insert a couple of sessions in a transaction.

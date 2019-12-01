@@ -35,7 +35,7 @@ func (s *SessionStore) selectSessions(dbSession DBSession, condition string, arg
 	if condition != "" {
 		condition = " WHERE " + condition
 	}
-	query := "SELECT id, name, started_at, finished_at FROM sessions" + condition + ";"
+	query := "SELECT id, name, started_at, finished_at FROM sessions" + condition + " ORDER BY started_at DESC;"
 
 	rows, err := dbSession.Query(query, args...)
 	if err != nil {
