@@ -14,22 +14,38 @@ This project consist in a small full stack web app that satisfy the following us
 ### Requirements
 
 For the backend, you need to have installed and configured [Go](https://golang.org).
+For the frontend, you need to have installed and configured [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 ### Dependencies
 
 To install dependencies for the backend, run the following commands inside the project folder:
 `make deps`
 
+To install dependencies for the frontend, run the following commands inside the frontend folder:
+`npm install`
+
+### Development
+
+Inside the project folder, run the following command to start the backend server:
+
+`go run .`
+
+Inside the frontend folder, run the following commands to start the development frontend server:
+
+`REACT_APP_SERVICE_URL=http://localhost:8080 npm start`
+
+This will initiate the frontend server. The project will be available at http://localhost:3000/.
+
 ### Production build
 
 A Dockerfile has been provided that will build the application and create an docker image ready to deploy it.
 
-Inside the project folder, run the following command to build the image:
+Inside the project folder, create a .env file (you can copy 'default.env') and then run the following command to build the images:
 
-`docker build -t pento-task .`
+`docker-compose build`
 
-Then, you can run a container:
+Then, run the following command:
 
-`docker run -it -p 3000:8080 --rm pento-task`
+`docker-compose up`
 
 The project will be available at http://localhost:3000/.

@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  time-tracker-backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    image: time-tracker-backend
+    container_name: time-tracker-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    volumes:
+      - "/srv/docker/time-tracker:/database"
+  time-tracker-frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend/
+    image: time-tracker-frontend
+    container_name: time-tracker-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - backend
+networks:
+  backend:
+    driver: "bridge"
